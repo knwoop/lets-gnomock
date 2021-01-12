@@ -1,5 +1,7 @@
 package model
 
+import "time"
+
 type User struct {
 	UserID    uint64    `json:"user_id"　db:"user_id"`       // user_id
 	Username  string    `json:"username"　db:"username"`     // username
@@ -18,7 +20,7 @@ func (u *User) Insert(db XODB) error {
 		`)`
 
 	// run query
-	res, err := db.Exec(sqlstr, u.Username, u.SignupAt, u.CreatedAt)
+	res, err := db.Exec(sqlstr, u.Username, u.CreatedAt)
 	if err != nil {
 		return err
 	}
@@ -31,7 +33,5 @@ func (u *User) Insert(db XODB) error {
 
 	// set primary key and existence
 	u.UserID = uint64(id)
-	u._exists = true
-
 	return nil
 }
