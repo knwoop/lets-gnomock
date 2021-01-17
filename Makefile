@@ -5,4 +5,4 @@ create_migrations:
 
 .PHONY: migrateup
 migrateup:
-	migrate -source file://db/mysql/migrations/ -database '$(PATHPORT_DATABASE_URL)' up
+	docker run -v $(PWD)/db/migrations:/db/migrations --network host migrate/migrate 	migrate -source file://db/mysql/migrations/ -database '$(PATHPORT_DATABASE_URL)' up
