@@ -2,7 +2,7 @@ package http
 
 import (
 	"context"
-	"net"
+	"fmt"
 	"net/http"
 
 	"github.com/knwoop/lets-gnomock/src/service"
@@ -11,25 +11,30 @@ import (
 type Server struct {
 	userService *service.UserService
 
+	addr   string
 	mux    *http.ServeMux
 	server *http.Server
 }
 
-func New(userService *service.UserService) (*Server, error) {
+func New(port int, userService *service.UserService) (*Server, error) {
 	server := &Server{
 		userService: userService,
+		addr:        fmt.Sprintf(":%d", port),
 		mux:         http.NewServeMux(),
 	}
+	server.registerHandlers()
+
 	return server, nil
 }
 
-func (s *Server) Serve(ln net.Listener) error {
+func (s *Server) Start() error {
 	server := &http.Server{
+		Addr:    s.addr,
 		Handler: s.mux,
 	}
 	s.server = server
 
-	if err := server.Serve(ln); err != nil && err != http.ErrServerClosed {
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 		return err
 	}
 
@@ -41,5 +46,6 @@ func (s *Server) GracefulStop(ctx context.Context) error {
 }
 
 func (s *Server) registerHandlers() {
-	s.mux.Handle("/services/users", &createHandler{})
+	s.mux.Handle("/create", &createHandler{userService: s.userService})
+	s.mux.Handle("/get", &getHandler{userService: s.userService})
 }
