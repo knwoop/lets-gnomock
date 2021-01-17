@@ -62,18 +62,10 @@ func (t *TestDB) Close() {
 func getInitStmts() ([]byte, error) {
 	pathName := "../../db/schema.sql"
 
-	// Load Schema DDL
 	b, err := ioutil.ReadFile(pathName)
 	if err != nil {
 		return nil, fmt.Errorf("cannot open schema.sql: %w", err)
 	}
 
 	return b, nil
-}
-
-func findDatabaseSchema() (string, error) {
-	_, file, _, _ := runtime.Caller(0)
-	srcPath := filepath.Clean(filepath.Join(filepath.Dir(file), "..", ".."))
-	schemaPath := filepath.Join(filepath.Dir(srcPath), "db/schema.sql")
-	return schemaPath, nil
 }
