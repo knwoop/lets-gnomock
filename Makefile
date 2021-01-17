@@ -1,4 +1,4 @@
-DATABASE_URL := mysql://${MYSQL_USER}@tcp(${MYSQL_HOST}:${MYSQL_PORT})/${MYSQL_DATABASE}
+DATABASE_URL := mysql://${MYSQL_USER}:${MYSQL_PASS}@tcp(${MYSQL_HOST}:${MYSQL_PORT})/${MYSQL_DATABASE}
 
 ## golang-migrate
 .PHONY: create_migrations
@@ -7,11 +7,11 @@ create_migrations:
 
 .PHONY: migrateup
 migrateup:
-	docker run -v $(PWD)/db/migrations:/db/migrations --network host migrate/migrate migrate -source file://db/mysql/migrations/ -database ${DATABASE_URL} up
+	docker run -v $(PWD)/db/migrations:/db/migrations --network host migrate/migrate -source file://db/migrations -database "${DATABASE_URL}" up
 
 .PHONY: migratedown
 migratedown:
-	docker run -v $(PWD)/db/migrations:/db/migrations --network host migrate/migrate migrate -source file://db/mysql/migrations/ -database ${DATABASE_URL} down
+	docker run -v $(PWD)/db/migrations:/db/migrations --network host migrate/migrate migrate -source file://db/migrations/ -database "${DATABASE_URL}" down
 
 .PHONY: gen
 gen:
