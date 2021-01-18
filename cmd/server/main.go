@@ -49,7 +49,6 @@ func run() error {
 
 	select {
 	case <-termCh:
-		return fmt.Errorf("failed to terminate server")
 	case <-errCh:
 		return fmt.Errorf("failed to serve http server")
 	}
