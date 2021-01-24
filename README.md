@@ -1,5 +1,10 @@
 # lets-gnomock
 
+## set env vars
+```shell script
+$ direnv allow
+```
+
 ## set up
 ```shell
 $ docker-compose up

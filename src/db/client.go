@@ -22,7 +22,7 @@ func NewClient(env *config.Env) (*sqlx.DB, error) {
 	dsn := c.FormatDSN()
 	db, err := sqlx.Connect("mysql", dsn)
 	if err != nil {
-		return nil, fmt.Errorf("failed to open db master(%s): %w", dsn, err)
+		return nil, fmt.Errorf("failed to open db(%s): %w", dsn, err)
 	}
 	return db, nil
 }
