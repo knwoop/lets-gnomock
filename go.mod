@@ -8,4 +8,5 @@ require (
 	github.com/jmoiron/sqlx v1.2.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/orlangure/gnomock v0.11.0
+	go.uber.org/zap v1.16.0
 )
